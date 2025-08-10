@@ -18,4 +18,15 @@ export default class LoginService{
             throw new Error("Registration failed: " + error.message);
         }
     }
+
+    static async validateToken(token: string) {
+        try {
+            const response = await axiosInstance.get("/auth/validate", {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            return response.data;
+        } catch (error: any) {
+            throw new Error("Token validation failed: " + error.message);
+        }
+    }
 }

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from 'framer-motion'
-import LoginService from "../services/LoginService"
-import { NavLink, useNavigate } from "react-router-dom";
+import LoginService from "../services/AuthService"
+import { useNavigate } from "react-router-dom";
 
 export default function Login(){
     const [username, setUsername] = useState<string>("");
