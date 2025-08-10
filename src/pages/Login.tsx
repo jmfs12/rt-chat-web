@@ -1,7 +1,35 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from 'framer-motion'
+import LoginService from "../services/LoginService"
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function Login(){
+    const [username, setUsername] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+
+    const navigate = useNavigate();
+
+    const handleLogin = async(): Promise<void> => {
+        try {
+            const data = await LoginService.login(username, password);
+            localStorage.setItem("token", data.token);
+            navigate("/chat");
+        } catch (error) {
+            console.error("Login failed:", error);
+        }
+    }
+
+    const handleSignup = async(): Promise<void> => {
+        try {
+            const data = await LoginService.register(username, email, password);
+            localStorage.setItem("token", data.token);
+            navigate("/chat");
+        } catch (error) {
+            console.error("Registration failed:", error);
+        }
+    }   
+
     const [form, setForm] = useState<string>("login")
     return (
         <div className="bg-gradient-to-t from-red-500 to-white h-screen w-screen flex items-center justify-center flex-col">
@@ -34,14 +62,13 @@ export default function Login(){
                                 <span className="text-4xl text-white">Welcome back!</span>
 
                                 <form className="flex flex-col gap-10 mt-12 text-white text-xl">
-                                    <input type="text" required placeholder="Username" className="w-[40rem] px-4 py-2 border border-white bg-transparent focus:outline-none focus:border focus:border-red-400 transition-colors duration-400"
-                                    />
+                                    <input type="text" required placeholder="Username" className="w-[40rem] px-4 py-2 border border-white bg-transparent focus:outline-none focus:border focus:border-red-400 transition-colors duration-400" onChange={(e) => setUsername(e.target.value)} value={username} />
 
-                                    <input type="password" required placeholder="Password" className="w-[40rem] px-4 py-2 border border-white bg-transparent focus:outline-none focus:border focus:border-red-400 transition-colors duration-400"/>
+                                    <input type="password" required placeholder="Password" className="w-[40rem] px-4 py-2 border border-white bg-transparent focus:outline-none focus:border focus:border-red-400 transition-colors duration-400" onChange={(e) => setPassword(e.target.value)} value={password} />
 
                                     <button type="button" className="text-red-400 hover:text-red-500 hover:text-shadow transition-colors duration-300 ml-auto cursor-pointer">Forgot Password?</button>
 
-                                    <button type="submit" className="bg-red-400 shadow-lg hover:bg-red-500 transition-colors duration-700 py-4 text-white font-bold text-4xl cursor-pointer">LOGIN</button>
+                                    <button type="button" className="bg-red-400 shadow-lg hover:bg-red-500 transition-colors duration-700 py-4 text-white font-bold text-4xl cursor-pointer" onClick={handleLogin}>LOGIN</button>
                                 </form>
                             </div>
                         </motion.div>
@@ -59,15 +86,15 @@ export default function Login(){
 
                             <form className="flex flex-col gap-10 mt-12 text-white text-xl">
                                 <input type="text" required placeholder="Username" className="w-[40rem] px-4 py-2 border border-white bg-transparent focus:outline-none focus:border focus:border-red-400 transition-colors duration-400"
-                                />
+                                onChange={(e) => setUsername(e.target.value)} value={username} />
 
                                 <input type="email" required placeholder="Email" className="w-[40rem] px-4 py-2 border border-white bg-transparent focus:outline-none focus:border focus:border-red-400 transition-colors duration-400"
-                                />
+                                onChange={(e) => setEmail(e.target.value)} value={email} />
 
                                 <input type="password" required placeholder="Password" className="w-[40rem] px-4 py-2 border border-white bg-transparent focus:outline-none focus:border focus:border-red-400 transition-colors duration-400"
-                                />
+                                onChange={(e) => setPassword(e.target.value)} value={password} />
 
-                                <button type="submit" className="bg-red-400 shadow-lg hover:bg-red-500 transition-colors duration-700 py-4 text-white font-bold text-4xl cursor-pointer">SIGN UP</button>
+                                <button type="button" className="bg-red-400 shadow-lg hover:bg-red-500 transition-colors duration-700 py-4 text-white font-bold text-4xl cursor-pointer" onClick={handleSignup}>SIGN UP</button>
                             </form>
                         </div>
                     </motion.div>
