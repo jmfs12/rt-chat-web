@@ -8,7 +8,6 @@ export default function PrivateRoute({children}: {children: JSX.Element}) {
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-        console.log("Token:", token);
         if (!token) {
             setIsAuthenticated(false);
             return; 
@@ -17,7 +16,6 @@ export default function PrivateRoute({children}: {children: JSX.Element}) {
         if (token) {
             AuthService.validateToken(token)
                 .then((isValid) => {
-                    console.log("Token valid:", isValid);
                     if (!isValid){
                         localStorage.removeItem("token");
                     }
@@ -30,7 +28,6 @@ export default function PrivateRoute({children}: {children: JSX.Element}) {
         return <div>Loading...</div>;
     }
 
-    console.log("Is authenticated:", isAuthenticated);
     return isAuthenticated ? children : <Navigate to="/login" />;
 
 }
