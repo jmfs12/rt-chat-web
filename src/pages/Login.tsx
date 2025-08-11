@@ -24,7 +24,7 @@ export default function Login(){
         try {
             const data = await LoginService.register(username, email, password);
             localStorage.setItem("token", data.token);
-            navigate("/chat");
+            navigate("/");
         } catch (error) {
             console.error("Registration failed:", error);
         }
