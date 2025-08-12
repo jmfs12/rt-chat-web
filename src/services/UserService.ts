@@ -17,7 +17,6 @@ class UserService {
                 Authorization: `Bearer ${token}`
             }
         });
-        console.log("All users:", response.data);
         return response.data;
     }
 }

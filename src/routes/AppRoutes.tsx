@@ -8,7 +8,12 @@ function AppRoutes() {
         <BrowserRouter>
             <Routes>
                 <Route path="/login" element={<Login />} />
-                <Route path="/*" element={
+                <Route path="/" element={
+                        <PrivateRoute>
+                            <Chat />
+                        </PrivateRoute>
+                } />
+                <Route path="/chat" element={
                         <PrivateRoute>
                             <Chat/>        
                         </PrivateRoute>

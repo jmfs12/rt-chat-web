@@ -7,5 +7,14 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   define:{
     global: 'window',
-  }
+  },
+  server: {
+    proxy: {
+      '/ws': {
+        target: 'http://localhost:8080', // your backend WebSocket server address
+        ws: true,  // crucial! enables websocket proxying
+        changeOrigin: true,
+      },
+    },
+  },
 })

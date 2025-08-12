@@ -8,10 +8,14 @@ export function useChatService() {
   const [messages, setMessages] = useState<MessageDTO[]>([]);
   const [connected, setConnected] = useState(false);
   const clientRef = useRef<Client | null>(null);
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     const client = new Client({
-      webSocketFactory: () => new SockJS('/ws'),
+      webSocketFactory: () => new SockJS(`http://localhost:8080/ws?token=${token}`),
+      connectHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
       debug: console.log,
       onConnect: () => {
         setConnected(true);
@@ -44,6 +48,7 @@ export function useChatService() {
         destination: '/app/send-message',
         body: JSON.stringify(message),
       });
+      setMessages((prev) => [...prev, message]);
     } else {
       console.error('Cannot send message, WebSocket not connected.');
     }
@@ -60,5 +65,5 @@ export function useChatService() {
     return response.data;
   };
 
-  return { connected, messages, sendMessage, getMessagesBetweenTwoUsers };
+  return { connected, messages, setMessages, sendMessage, getMessagesBetweenTwoUsers };
 }
